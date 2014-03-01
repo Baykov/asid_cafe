@@ -1,0 +1,36 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ASUW_Cafe.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Block" Type="System.Guid" Scope="User">
+      <Value Profile="(Default)">00000000-0000-0000-0000-000000000000</Value>
+    </Setting>
+    <Setting Name="site" Type="(Web Service URL)" Scope="User">
+      <Value Profile="(Default)">http://kafe-taganrog.ru</Value>
+    </Setting>
+    <Setting Name="loginbds" Type="System.String" Scope="User">
+      <Value Profile="(Default)">bladge_kafetag</Value>
+    </Setting>
+    <Setting Name="passbds" Type="System.String" Scope="User">
+      <Value Profile="(Default)">80sHvKd3</Value>
+    </Setting>
+    <Setting Name="addrbds" Type="System.String" Scope="User">
+      <Value Profile="(Default)">91.106.203.119</Value>
+    </Setting>
+    <Setting Name="namebds" Type="System.String" Scope="User">
+      <Value Profile="(Default)">bladge_kafetag</Value>
+    </Setting>
+    <Setting Name="ftpaddr" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ftp://kafe-taganrog.ru</Value>
+    </Setting>
+    <Setting Name="ftplogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">bladge_ftptag</Value>
+    </Setting>
+    <Setting Name="ftppass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">71kiJeeT</Value>
+    </Setting>
+    <Setting Name="ftpdir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/components/com_mtree/img/listings</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
