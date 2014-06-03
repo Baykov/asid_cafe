@@ -12,10 +12,10 @@
       <Value Profile="(Default)">bladge_kafetag</Value>
     </Setting>
     <Setting Name="passbds" Type="System.String" Scope="User">
-      <Value Profile="(Default)">80sHvKd3</Value>
+      <Value Profile="(Default)">c3G3NoPo</Value>
     </Setting>
     <Setting Name="addrbds" Type="System.String" Scope="User">
-      <Value Profile="(Default)">91.106.203.119</Value>
+      <Value Profile="(Default)">5.101.153.43</Value>
     </Setting>
     <Setting Name="namebds" Type="System.String" Scope="User">
       <Value Profile="(Default)">bladge_kafetag</Value>
@@ -31,6 +31,9 @@
     </Setting>
     <Setting Name="ftpdir" Type="System.String" Scope="User">
       <Value Profile="(Default)">/components/com_mtree/img/listings</Value>
+    </Setting>
+    <Setting Name="addr" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

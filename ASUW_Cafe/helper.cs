@@ -41,7 +41,8 @@ namespace ASUW_Cafe
         public static string ftpdir = ASUW_Cafe.Properties.Settings.Default.ftpdir;
 
        // public static Image MemForImage;
-        
+
+        public static bool userisDemo = false;
         public static string username = "Гость";
         public static string GET(string Url, string Data)
         {

@@ -46,7 +46,7 @@ namespace ASUW_Cafe
 
                 try
                 {
-                    string logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=gethits&id=" + login + "&pid=" + pass + "&tid=" + usertype + "" + "&gid=" + old + "&aid = " + apisms + "").ToString();
+                    string logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=gethits&id=" + login + "&pid=" + pass + "&tid=" + usertype + "" + "&gid=" + old + "&aid=" + apisms + "").ToString();
                     if (logined == "3")
                     {
                         MessageBox.Show("Это имя занято.");
@@ -57,10 +57,15 @@ namespace ASUW_Cafe
                         MessageBox.Show("Ошибка сети, попытайтесь позже.");
                         return;
                     }
-                    else
+                    else if (logined == "1")
                     {
                         MessageBox.Show("Регистрация успешно завершена. После перезапуска программы можете войти под своими данными.");
                         this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                        return;
                     }
                 }
                 catch

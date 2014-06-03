@@ -27,7 +27,6 @@ namespace ASUW_Cafe
         {
             InitializeComponent();
             progress.Maximum = 100;
-           // RunTest();
             block = helper.checkBlock();
             try
             {
@@ -63,17 +62,13 @@ namespace ASUW_Cafe
 
         void _worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-           // helper.PercentageCompletion = e.ProgressPercentage;
-            //helper.Description = String.Format("Завершено {0}%", e.ProgressPercentage);
             progress.Value =e.ProgressPercentage;
         }
 
         void _worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-                 usersbox.ItemsSource = users;
-                usersbox.DisplayMemberPath = "Value";
-           //helper.PercentageCompletion = 100;
-           // helper.Description = String.Format("Завершено {0}%", 100);
+            usersbox.ItemsSource = users;
+            usersbox.DisplayMemberPath = "Value";
         }
 
         private void logbut_Click(object sender, RoutedEventArgs e)
@@ -89,13 +84,28 @@ namespace ASUW_Cafe
                 userid = user.Key;
                 username = user.Value;
                 pass = passbox.Password.ToString();
-                logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=getstats&id=" + userid + "&pid=" + pass + "").ToString();
+                logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=getstats&id=" + userid + "&pid=" + pass + "&lid=" + username + "").ToString();
                 if (logined == "1")
                 {
                     try
                     {
                         MainWindow mwin = new MainWindow();
                         helper.username = username;
+                        mwin.Show();
+                        this.Close();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ошибка запуска программы");
+                    }
+                }
+                else if (logined == "2")
+                {
+                    try
+                    {
+                        MainWindow mwin = new MainWindow();
+                        helper.username = username;
+                        helper.userisDemo = true;
                         this.Close();
                         mwin.Show();
                     }

@@ -45,15 +45,18 @@ namespace ASUW_Cafe
                 if (remMysqlConn.State == System.Data.ConnectionState.Closed)
                 {
                     remMysqlConn.Open();
+               //     MessageBox.Show("Соединение с базой есть!");
                 }
-                listdataAdapter.SelectCommand = new MySqlCommand(@"SELECT  link_id, link_name FROM qzgoj_mt_links ", remMysqlConn);
+                listdataAdapter.SelectCommand = new MySqlCommand(@"SELECT  link_id, link_name FROM qzgoj_mt_links WHERE block='" + block + "'", remMysqlConn);
                 listdataAdapter.Fill(listdataSet);
                 gridobjects.ItemsSource = listdataSet.Tables[0].DefaultView;
+                //MessageBox.Show("Количество объкутов в базе" + listdataSet.Tables[0].Rows.Count);
+
                 if (remMysqlConn.State == System.Data.ConnectionState.Open)
                 {
                     remMysqlConn.Close();
                 }
-                //gridobjects.Columns[0].Header = "Id";WHERE block='" + block + "'
+                //gridobjects.Columns[0].Header = "Id"; WHERE block='" + block + "'
                 //  gridobjects.Columns[1].Header = "Название";
             }
             catch
@@ -61,7 +64,7 @@ namespace ASUW_Cafe
                 MessageBox.Show("Ошибка сети, попытайтесь позже.");
                 this.Close();
             }
-           // loadStats();
+            loadStats();
         }
 
         private void gridobjects_SelectionChanged(object sender, SelectionChangedEventArgs e)

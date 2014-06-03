@@ -5,7 +5,7 @@
     <Grid>
         <TextBox x:Name="regloginbox" HorizontalAlignment="Left" Height="23" Margin="100,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <PasswordBox x:Name="regpassbox" HorizontalAlignment="Left" Margin="100,183,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
-        <Button x:Name="regbutton" Content="Зарегистрироваться" HorizontalAlignment="Left" Margin="100,290,0,0" VerticalAlignment="Top" Width="120" Click="Regbutton_Click"/>
+        <Button x:Name="regbutton" Content="Зарегистрироваться" HorizontalAlignment="Left" Margin="100,290,0,0" VerticalAlignment="Top" Width="120" Click="Regbutton_Click" IsDefault="True"/>
         <ComboBox x:Name="typesbox" HorizontalAlignment="Left" Margin="100,45,0,0" VerticalAlignment="Top" Width="120">
             <ListBoxItem Content="Директор" Tag="1">
                 <ListBoxItem.BindingGroup>

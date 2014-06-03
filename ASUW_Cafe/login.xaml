@@ -5,12 +5,12 @@
     <Grid>
         <ComboBox x:Name="usersbox" HorizontalAlignment="Left" Margin="86,91,0,0" VerticalAlignment="Top" Width="120" />
         <PasswordBox x:Name="passbox" HorizontalAlignment="Left" Margin="86,163,0,0" VerticalAlignment="Top" Width="120" Height="22"/>
-        <Button x:Name="logbut" Content="Вход" HorizontalAlignment="Left" Margin="21,213,0,0" VerticalAlignment="Top" Width="87" Click="logbut_Click">
+        <Button x:Name="logbut" Content="Вход" HorizontalAlignment="Left" Margin="31,213,0,0" VerticalAlignment="Top" Width="87" Click="logbut_Click" IsDefault="True">
             <Button.BindingGroup>
                 <BindingGroup/>
             </Button.BindingGroup>
         </Button>
-        <Button x:Name="regbut" Content="Регистрация" HorizontalAlignment="Left" Margin="150,213,0,0" VerticalAlignment="Top" Width="120" Click="regbut_Click"/>
+        <Button x:Name="regbut" Content="Регистрация" HorizontalAlignment="Left" Margin="155,213,0,0" VerticalAlignment="Top" Width="120" Click="regbut_Click"/>
         <Label Content="Логин" HorizontalAlignment="Left" Margin="86,60,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="86,132,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Content="Выберите пользователя и введите &#xD;&#xA;соответствующий пароль для входа." HorizontalAlignment="Left" Margin="31,10,0,0" VerticalAlignment="Top" Width="215" Height="45"/>
