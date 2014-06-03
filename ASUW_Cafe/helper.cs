@@ -39,7 +39,7 @@ namespace ASUW_Cafe
         public static string ftplogin = ASUW_Cafe.Properties.Settings.Default.ftplogin;
         public static string ftppass = ASUW_Cafe.Properties.Settings.Default.ftppass;
         public static string ftpdir = ASUW_Cafe.Properties.Settings.Default.ftpdir;
-
+        public static bool userisDemo = false;
        // public static Image MemForImage;
         
         public static string username = "Гость";

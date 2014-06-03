@@ -15,7 +15,7 @@
       <Value Profile="(Default)">80sHvKd3</Value>
     </Setting>
     <Setting Name="addrbds" Type="System.String" Scope="User">
-      <Value Profile="(Default)">91.106.203.119</Value>
+      <Value Profile="(Default)">5.101.153.43</Value>
     </Setting>
     <Setting Name="namebds" Type="System.String" Scope="User">
       <Value Profile="(Default)">bladge_kafetag</Value>
