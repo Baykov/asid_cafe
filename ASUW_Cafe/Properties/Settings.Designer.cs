@@ -62,7 +62,7 @@ namespace ASUW_Cafe.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("80sHvKd3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c3G3NoPo")]
         public string passbds {
             get {
                 return ((string)(this["passbds"]));
