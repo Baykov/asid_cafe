@@ -1,20 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
 
 namespace ASUW_Cafe
@@ -53,15 +43,13 @@ namespace ASUW_Cafe
                 {
                     remMysqlConn.Close();
                 }
-                //gridobjects.Columns[0].Header = "Id";WHERE block='" + block + "'
-                //  gridobjects.Columns[1].Header = "Название";
             }
             catch
             {
                 MessageBox.Show("Ошибка сети, попытайтесь позже.");
                 this.Close();
             }
-           // loadStats();
+            loadStats();
         }
 
         private void gridobjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
