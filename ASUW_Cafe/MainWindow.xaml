@@ -5,7 +5,7 @@
     <Grid Margin="0,0,18,6">
         <DataGrid x:Name="gridobjects" HorizontalAlignment="Left" Margin="10,148,0,10" Width="340" SelectionUnit="FullRow" SelectionChanged="gridobjects_SelectionChanged" CanUserAddRows="False" CanUserDeleteRows="False"/>
         <Label Content="Уже имеющиеся заведения" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="32" Width="301" FontSize="16" FontWeight="Bold"/>
-        <Button Content="Добавить заведение" Margin="10,41,0,0" Click="Button_Click" HorizontalAlignment="Left" Width="165" Height="44" VerticalAlignment="Top" IsEnabled="False"/>
+        <Button Content="Добавить заведение" Margin="10,41,0,0" Click="Button_Click" HorizontalAlignment="Left" Width="165" Height="44" VerticalAlignment="Top"/>
         <Button Content="Редактировать" Click="Button_Click_1" RenderTransformOrigin="0.361,0.032" Height="43" VerticalAlignment="Top" Margin="185,42,0,0" HorizontalAlignment="Left" Width="165"/>
         <TextBox x:Name="serch_input" HorizontalAlignment="Left" Height="23" Margin="10,120,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260"/>
         <Button x:Name="serch_btn" Content="Найти" HorizontalAlignment="Left" Margin="275,120,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="serch_btn_Click"/>
