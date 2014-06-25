@@ -32,14 +32,14 @@ namespace ASUW_Cafe
             Guid block = helper.checkBlock();
             try
             {
-                if (remMysqlConn.State == System.Data.ConnectionState.Closed)
+                if (remMysqlConn.State == ConnectionState.Closed)
                 {
                     remMysqlConn.Open();
                 }
                 listdataAdapter.SelectCommand = new MySqlCommand(@"SELECT  link_id, link_name FROM qzgoj_mt_links ", remMysqlConn);
                 listdataAdapter.Fill(listdataSet);
                 gridobjects.ItemsSource = listdataSet.Tables[0].DefaultView;
-                if (remMysqlConn.State == System.Data.ConnectionState.Open)
+                if (remMysqlConn.State == ConnectionState.Open)
                 {
                     remMysqlConn.Close();
                 }
@@ -47,7 +47,7 @@ namespace ASUW_Cafe
             catch
             {
                 MessageBox.Show("Ошибка сети, попытайтесь позже.");
-                this.Close();
+                Close();
             }
             loadStats();
         }

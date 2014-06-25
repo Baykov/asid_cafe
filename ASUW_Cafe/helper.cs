@@ -1,55 +1,52 @@
-﻿using Microsoft.Win32;
+﻿using System.Drawing.Imaging;
+using System.Net;
+using ASUW_Cafe.Properties;
+using Microsoft.Win32;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Xml;
 using System.Xml.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace ASUW_Cafe
 {
     class helper
     {
-        public static string url = ASUW_Cafe.Properties.Settings.Default.site;
-        public static string loginbd = Properties.Settings.Default.loginbds;//"bladge_kafeyaro";
-        public static string passbd = Properties.Settings.Default.passbds;//"s98Z2Gpq";
-        public static string addrbd = Properties.Settings.Default.addrbds;//91.106.201.126"91.106.201.126";
-        public static string namebd = Properties.Settings.Default.namebds;//"bladge_kafeyaro";
+        public static string url = Settings.Default.site;
+        public static string loginbd = Settings.Default.loginbds;//"bladge_kafeyaro";
+        public static string passbd = Settings.Default.passbds;//"s98Z2Gpq";
+        public static string addrbd = Settings.Default.addrbds;//91.106.201.126"91.106.201.126";
+        public static string namebd = Settings.Default.namebds;//"bladge_kafeyaro";
         public static string ASIDConnectionString = @"Server=" + addrbd + ";Database=" + namebd + ";Uid=" + loginbd + ";Pwd=" + passbd + ";CharSet=utf8;Allow Zero Datetime=true";
         public static MySqlConnection remMysqlConn = new MySqlConnection(ASIDConnectionString);
 
         public static string[] coords = new string[]{ "", "" };
        // public static string url = ASUW_Cafe.Properties.Settings.Default.site;
-        public static OpenFileDialog loadImage = new  Microsoft.Win32.OpenFileDialog();
+        public static OpenFileDialog loadImage = new  OpenFileDialog();
         public static Dictionary<string, string> words = new Dictionary<string, string>();
 
-        public static string ftpaddr = ASUW_Cafe.Properties.Settings.Default.ftpaddr;
-        public static string ftplogin = ASUW_Cafe.Properties.Settings.Default.ftplogin;
-        public static string ftppass = ASUW_Cafe.Properties.Settings.Default.ftppass;
-        public static string ftpdir = ASUW_Cafe.Properties.Settings.Default.ftpdir;
+        public static string ftpaddr = Settings.Default.ftpaddr;
+        public static string ftplogin = Settings.Default.ftplogin;
+        public static string ftppass = Settings.Default.ftppass;
+        public static string ftpdir = Settings.Default.ftpdir;
         public static bool userisDemo = false;
        // public static Image MemForImage;
         
         public static string username = "Гость";
         public static string GET(string Url, string Data)
         {
-            System.Net.WebRequest req = System.Net.WebRequest.Create(Url + Data);
+            WebRequest req = WebRequest.Create(Url + Data);
             // req.Proxy = new WebProxy("195.200.245.49");
-            System.Net.WebResponse resp = req.GetResponse();
-            System.IO.Stream stream = resp.GetResponseStream();
-            System.IO.StreamReader sr = new System.IO.StreamReader(stream);
+            WebResponse resp = req.GetResponse();
+            Stream stream = resp.GetResponseStream();
+            StreamReader sr = new StreamReader(stream);
             string Out = sr.ReadToEnd();
             sr.Close();
             return Out;
@@ -57,7 +54,7 @@ namespace ASUW_Cafe
 
         public static Guid checkBlock()
         {
-            Guid old = ASUW_Cafe.Properties.Settings.Default.Block;
+            Guid old = Settings.Default.Block;
             Console.WriteLine(old);
             Guid Block = Guid.NewGuid();
             // bool emptyGuid = (,);
@@ -65,9 +62,9 @@ namespace ASUW_Cafe
             {
                 try
                 {
-                    ASUW_Cafe.Properties.Settings.Default.Block = Block;
-                    ASUW_Cafe.Properties.Settings.Default.Save();
-                    ASUW_Cafe.Properties.Settings.Default.Reload();
+                    Settings.Default.Block = Block;
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
                     return Block;
                 }
                 catch
@@ -85,10 +82,10 @@ namespace ASUW_Cafe
         public static Dictionary<string, string> ParseJson(string res)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            Newtonsoft.Json.Linq.JArray result = new Newtonsoft.Json.Linq.JArray();
+            JArray result = new JArray();
             try
             {
-                result = (Newtonsoft.Json.Linq.JArray)JsonConvert.DeserializeObject(res);
+                result = (JArray)JsonConvert.DeserializeObject(res);
 
             }
             catch
@@ -97,7 +94,7 @@ namespace ASUW_Cafe
                 return null;
             }
 
-            foreach (Newtonsoft.Json.Linq.JObject value in result)
+            foreach (JObject value in result)
             {
                 dict.Add(value.Value<string>("userid").ToString().Trim(), value.Value<string>("login").ToString().Trim());
             }
@@ -265,7 +262,7 @@ namespace ASUW_Cafe
         {
             try
             {
-                string ResultSearchObject = helper.GET("http://geocode-maps.yandex.ru/1.x/?geocode=", address);
+                string ResultSearchObject = GET("http://geocode-maps.yandex.ru/1.x/?geocode=", address);
                 XDocument doc = XDocument.Parse(ResultSearchObject);
                 foreach (XElement el in doc.Root.Elements())
                 {
@@ -336,7 +333,7 @@ namespace ASUW_Cafe
             }
         }
 
-        public static void ScaleByWidthAndHeight(System.Drawing.Image oImg, int maxWidth, int maxHeight, int resolutionDPI, string text)
+        public static void ScaleByWidthAndHeight(Image oImg, int maxWidth, int maxHeight, int resolutionDPI, string text)
         {
             var originalBitmap = new Bitmap(oImg);
             double ratioWidthToHeight = originalBitmap.Width / (double)originalBitmap.Height;
@@ -358,18 +355,18 @@ namespace ASUW_Cafe
             graphic.DrawImage(originalBitmap, 0, 0, newBitmap.Width, newBitmap.Height);
 
             newBitmap.SetResolution(resolutionDPI, resolutionDPI);
-            System.Drawing.Imaging.ImageFormat format = System.Drawing.Imaging.ImageFormat.Jpeg;
+            ImageFormat format = ImageFormat.Jpeg;
           //  return newBitmap;
             newBitmap.Save(text, format);
         }
     
-        public  static System.Drawing.Image DrawImageFromContrImage(System.Windows.Controls.Image img){
+        public  static Image DrawImageFromContrImage(System.Windows.Controls.Image img){
            MemoryStream ms = new MemoryStream();
-           System.Windows.Media.Imaging.BmpBitmapEncoder bbe = new BmpBitmapEncoder();
+           BmpBitmapEncoder bbe = new BmpBitmapEncoder();
            bbe.Frames.Add(BitmapFrame.Create(new Uri(img.Source.ToString(), UriKind.RelativeOrAbsolute)));
 
            bbe.Save(ms);
-           System.Drawing.Image img2 = System.Drawing.Image.FromStream(ms);
+           Image img2 = Image.FromStream(ms);
            return img2;
        }
     }

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ASUW_Cafe.Properties;
 
 namespace ASUW_Cafe
 {
@@ -36,12 +37,12 @@ namespace ASUW_Cafe
                 login = regloginbox.Text.ToString();
                 pass = regpassbox.Password.ToString();
                 apisms = regapibox.Text.ToString();
-                Guid old = ASUW_Cafe.Properties.Settings.Default.Block;
+                Guid old = Settings.Default.Block;
                 if (old == Guid.Empty)
                 {
                     helper.checkBlock();
-                    ASUW_Cafe.Properties.Settings.Default.Reload();
-                    old = ASUW_Cafe.Properties.Settings.Default.Block;
+                    Settings.Default.Reload();
+                    old = Settings.Default.Block;
                 }
 
                 try
@@ -60,7 +61,7 @@ namespace ASUW_Cafe
                     else
                     {
                         MessageBox.Show("Регистрация успешно завершена. После перезапуска программы можете войти под своими данными.");
-                        this.Close();
+                        Close();
                     }
                 }
                 catch

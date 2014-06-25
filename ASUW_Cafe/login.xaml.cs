@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,7 +37,7 @@ namespace ASUW_Cafe
             catch
             {
                 MessageBox.Show("Ошибка сети, попытайтесь позже.");
-                this.Close();
+                Close();
             }
         }
 
@@ -46,7 +47,7 @@ namespace ASUW_Cafe
             for (int i = 0; i < 101; i++)
             {
                 _worker.ReportProgress(i);
-                System.Threading.Thread.Sleep(8);
+                Thread.Sleep(8);
             }
         }
 
@@ -82,10 +83,10 @@ namespace ASUW_Cafe
             string username = "";
             string pass = "";
             string logined = "";
-            System.Collections.Generic.KeyValuePair<string, string> user = new System.Collections.Generic.KeyValuePair<string, string>();
+            KeyValuePair<string, string> user = new KeyValuePair<string, string>();
             try
             {
-                user = (System.Collections.Generic.KeyValuePair<string, string>)usersbox.SelectedValue;
+                user = (KeyValuePair<string, string>)usersbox.SelectedValue;
                 userid = user.Key;
                 username = user.Value;
                 pass = passbox.Password.ToString();
@@ -96,7 +97,7 @@ namespace ASUW_Cafe
                     {
                         MainWindow mwin = new MainWindow();
                         helper.username = username;
-                        this.Close();
+                        Close();
                         mwin.Show();
                     }
                     catch
