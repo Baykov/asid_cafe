@@ -29,7 +29,7 @@ namespace ASUW_Cafe
         public void loadobjs()
         {
             InitializeComponent();
-            Guid block = helper.checkBlock();
+            //Guid block = helper.checkBlock();
             try
             {
                 if (remMysqlConn.State == ConnectionState.Closed)
