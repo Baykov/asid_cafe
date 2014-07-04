@@ -16,41 +16,59 @@ namespace ASUW_Cafe
     {
 
         public static string idCafe = "";
-
-        public static MySqlConnection remMysqlConn = new MySqlConnection(helper.ASIDConnectionString);
         static public MySqlDataAdapter listdataAdapter = new MySqlDataAdapter();
         static public DataSet listdataSet = new DataSet();
+
+        public static string idFotoset = "";
+        static public MySqlDataAdapter fotosetsdataAdapter = new MySqlDataAdapter();
+        static public DataSet fotosetsdataSet = new DataSet();
         public MainWindow()
         {
             InitializeComponent();
+            loadStats();
             loadobjs();
+            loadfotosets();
         }
 
         public void loadobjs()
         {
-            InitializeComponent();
-            //Guid block = helper.checkBlock();
             try
             {
-                if (remMysqlConn.State == ConnectionState.Closed)
-                {
-                    remMysqlConn.Open();
-                }
-                listdataAdapter.SelectCommand = new MySqlCommand(@"SELECT  link_id, link_name FROM qzgoj_mt_links ", remMysqlConn);
+                var remMysqlConn = new MySqlConnection(helper.ASIDConnectionString);
+                remMysqlConn.Open();
+
+                listdataAdapter.SelectCommand = new MySqlCommand(@"SELECT link_id, link_name FROM  qzgoj_mt_links", remMysqlConn);
                 listdataAdapter.Fill(listdataSet);
                 gridobjects.ItemsSource = listdataSet.Tables[0].DefaultView;
-                if (remMysqlConn.State == ConnectionState.Open)
-                {
-                    remMysqlConn.Close();
-                }
+                remMysqlConn.Close();
+                helper.listObjects = listdataSet.Copy();
             }
             catch
             {
                 MessageBox.Show("Ошибка сети, попытайтесь позже.");
                 Close();
             }
-            loadStats();
         }
+
+        public void loadfotosets()
+        {
+            try
+            {
+                var remMysqlConn = new MySqlConnection(helper.ASIDConnectionString);
+                remMysqlConn.Open();
+                fotosetsdataAdapter.SelectCommand = new MySqlCommand(
+                    @"SELECT *  FROM asuw_fotosets ", remMysqlConn);
+                fotosetsdataAdapter.Fill(fotosetsdataSet);
+                gridofotosets.ItemsSource = fotosetsdataSet.Tables[0].DefaultView;
+                remMysqlConn.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                Close();
+            }
+        }
+
 
         private void gridobjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -140,9 +158,56 @@ namespace ASUW_Cafe
         {
             gridobjects.Columns[0].Header = "Id";
             gridobjects.Columns[1].Header = "Название";
+            gridofotosets.Columns[0].Header = "Id";
+            gridofotosets.Columns[1].Header = "Название";
 
         }
 
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            fotoset fotoset = new fotoset("");
+            fotoset.Show();
+            fotoset.Activate();
 
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            fotoset fotoset = new fotoset(idFotoset);
+            fotoset.Show();
+            fotoset.Activate();
+
+        }
+
+        private void serch_btn_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            var serchstr = "";
+            serchstr = serch_input_Copy.Text;
+            try
+            {
+                var dv = (DataView)gridofotosets.ItemsSource;
+                dv.RowFilter = "title like '%" + serchstr + "%'";
+                gridofotosets.ItemsSource = dv;
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+            }
+
+        }
+
+        private void gridofotosets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DataRowView rowView = gridobjects.SelectedValue as DataRowView;
+            try
+            {
+                idFotoset = rowView[0].ToString();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+            }
+
+        }
     }
 }

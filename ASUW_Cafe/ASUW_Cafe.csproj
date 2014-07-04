@@ -117,11 +117,18 @@
     <Compile Include="cafe.xaml.cs">
       <DependentUpon>cafe.xaml</DependentUpon>
     </Compile>
+    <Compile Include="fotoset.xaml.cs">
+      <DependentUpon>fotoset.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FtpClient.cs" />
     <Compile Include="register.xaml.cs">
       <DependentUpon>register.xaml</DependentUpon>
     </Compile>
     <Page Include="cafe.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="fotoset.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

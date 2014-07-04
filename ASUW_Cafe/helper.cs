@@ -1,4 +1,5 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Data;
+using System.Drawing.Imaging;
 using System.Net;
 using ASUW_Cafe.Properties;
 using Microsoft.Win32;
@@ -31,6 +32,8 @@ namespace ASUW_Cafe
        // public static string url = ASUW_Cafe.Properties.Settings.Default.site;
         public static OpenFileDialog loadImage = new  OpenFileDialog();
         public static Dictionary<string, string> words = new Dictionary<string, string>();
+
+        public static DataSet listObjects { get; set; }
 
         public static string ftpaddr = Settings.Default.ftpaddr;
         public static string ftplogin = Settings.Default.ftplogin;
