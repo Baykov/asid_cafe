@@ -7,5 +7,6 @@ namespace ASUW_Cafe
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

@@ -22,12 +22,17 @@ namespace ASUW_Cafe
         public static string idFotoset = "";
         static public MySqlDataAdapter fotosetsdataAdapter = new MySqlDataAdapter();
         static public DataSet fotosetsdataSet = new DataSet();
-        public MainWindow()
+
+        public static string idNews = "";
+        static public MySqlDataAdapter newsdataAdapter = new MySqlDataAdapter();
+        static public DataSet newsdataSet = new DataSet();
+        public MainWindow(string user)
         {
             InitializeComponent();
             loadStats();
             loadobjs();
             loadfotosets();
+            loadnews();
         }
 
         public void loadobjs()
@@ -43,9 +48,9 @@ namespace ASUW_Cafe
                 remMysqlConn.Close();
                 helper.listObjects = listdataSet.Copy();
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                MessageBox.Show(e.Message+"Ошибка сети, попытайтесь позже.");
                 Close();
             }
         }
@@ -54,6 +59,7 @@ namespace ASUW_Cafe
         {
             try
             {
+                fotosetsdataSet.Clear();
                 var remMysqlConn = new MySqlConnection(helper.ASIDConnectionString);
                 remMysqlConn.Open();
                 fotosetsdataAdapter.SelectCommand = new MySqlCommand(
@@ -62,31 +68,49 @@ namespace ASUW_Cafe
                 gridofotosets.ItemsSource = fotosetsdataSet.Tables[0].DefaultView;
                 remMysqlConn.Close();
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                MessageBox.Show(e.Message);
                 Close();
             }
         }
 
+        private void loadnews()
+        {
+            try
+            {
+                var remMysqlConn = new MySqlConnection(helper.ASIDConnectionString);
+                remMysqlConn.Open();
+                newsdataAdapter.SelectCommand = new MySqlCommand(
+                    @"SELECT id, title  FROM qzgoj_content WHERE catid = 10 ", remMysqlConn);
+                newsdataAdapter.Fill(newsdataSet);
+                gridnews.ItemsSource = newsdataSet.Tables[0].DefaultView;
+                remMysqlConn.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message+"Ошибка сети, попытайтесь позже.");
+                Close();
+            }
+        }
 
         private void gridobjects_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataRowView rowView = gridobjects.SelectedValue as DataRowView;
+            var rowView = gridobjects.SelectedValue as DataRowView;
             try 
             {
                 idCafe = rowView[0].ToString();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+                MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
             }
            // MessageBox.Show(rowView[0].ToString());            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            cafe cafe = new cafe("");
+            var cafe = new cafe("");
             cafe.Show();
             cafe.Activate();
 
@@ -94,7 +118,7 @@ namespace ASUW_Cafe
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            cafe cafe = new cafe(idCafe);
+            var cafe = new cafe(idCafe);
             cafe.Show();
             cafe.Activate();
 
@@ -102,45 +126,45 @@ namespace ASUW_Cafe
 
         private void serch_btn_Click(object sender, RoutedEventArgs e)
         {
-            string serchstr = "";
-            DataRow[] serchrows = new DataRow[] { };
+            var serchstr = "";
+            var serchrows = new DataRow[] { };
             serchstr = serch_input.Text;
             try
             {
-                DataView dv = (DataView)gridobjects.ItemsSource;
+                var dv = (DataView)gridobjects.ItemsSource;
                 dv.RowFilter = "link_name like '%" + serchstr + "%'";
                 gridobjects.ItemsSource = dv;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+                MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
             }
         }
         private void loadStats()
         {
             try
             {
-                DataSet dataSet = new DataSet();
+                var dataSet = new DataSet();
                 dataSet.ReadXml(@"http://kafe-taganrog.ru/asuw_st/asidupd.xml"); 
                 stat_grid.ItemsSource = dataSet.Tables[0].DefaultView; 
             }
-            catch
+            catch (Exception e)
             {
-                MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                MessageBox.Show(e.Message + "Ошибка сети, попытайтесь позже.");
             }
         }
 
         private void savestatbut_Click(object sender, RoutedEventArgs e)
         {
-            DataSet ds = new DataSet();
-            DataTable tabnew = new DataTable();
+            var ds = new DataSet();
+            var tabnew = new DataTable();
             try
             {
                 var ftpClient = new FtpClient(helper.ftpaddr, helper.ftplogin, helper.ftppass);
-                DataView dv = (DataView)stat_grid.ItemsSource;
+                var dv = (DataView)stat_grid.ItemsSource;
                 tabnew = dv.Table.Copy();
                 ds.Tables.Add(tabnew);
-                XmlTextWriter newXml = new XmlTextWriter("asidupd.xml", Encoding.UTF8);
+                var newXml = new XmlTextWriter("asidupd.xml", Encoding.UTF8);
                 ds.WriteXml(newXml);
                 newXml.Close();
 
@@ -148,9 +172,9 @@ namespace ASUW_Cafe
                 Console.WriteLine();
                 loadStats();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка сети, попытайтесь позже.");
+                MessageBox.Show(ex.Message + "Ошибка сети, попытайтесь позже.");
             }
         }
 
@@ -160,12 +184,14 @@ namespace ASUW_Cafe
             gridobjects.Columns[1].Header = "Название";
             gridofotosets.Columns[0].Header = "Id";
             gridofotosets.Columns[1].Header = "Название";
+            gridnews.Columns[0].Header = "Id";
+            gridnews.Columns[1].Header = "Название";
 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            fotoset fotoset = new fotoset("");
+            var fotoset = new fotoset("", this);
             fotoset.Show();
             fotoset.Activate();
 
@@ -173,7 +199,7 @@ namespace ASUW_Cafe
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            fotoset fotoset = new fotoset(idFotoset);
+            var fotoset = new fotoset(idFotoset, this);
             fotoset.Show();
             fotoset.Activate();
 
@@ -189,25 +215,73 @@ namespace ASUW_Cafe
                 dv.RowFilter = "title like '%" + serchstr + "%'";
                 gridofotosets.ItemsSource = dv;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+                MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
             }
 
         }
 
         private void gridofotosets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataRowView rowView = gridobjects.SelectedValue as DataRowView;
+            if (gridofotosets.SelectedValue != null)
+            {
+                var rowView = gridofotosets.SelectedValue as DataRowView;
+                try
+                {
+                    idFotoset = rowView[0].ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
+                }
+            }
+        }
+
+        private void addnews_Click(object sender, RoutedEventArgs e)
+        {
+            var news = new news("");
+            news.Show();
+            news.Activate();
+
+        }
+
+        private void editnews_Click(object sender, RoutedEventArgs e)
+        {
+
+            var news = new news(idNews);
+            news.Show();
+            news.Activate();
+        }
+
+        private void serchnews_btn_Click(object sender, RoutedEventArgs e)
+        {
+            var serchstr = "";
+            var serchrows = new DataRow[] { };
+            serchstr = serch_news.Text;
             try
             {
-                idFotoset = rowView[0].ToString();
+                var dv = (DataView)gridnews.ItemsSource;
+                dv.RowFilter = "title like '%" + serchstr + "%'";
+                gridnews.ItemsSource = dv;
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Ошибка программы, попытайтесь позже.");
+                MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
             }
+        }
 
+        private void gridnews_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var rowView = gridnews.SelectedValue as DataRowView;
+            try
+            {
+                idNews = rowView[0].ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "Ошибка программы, попытайтесь позже.");
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Drawing.Imaging;
 using System.Net;
+using System.Runtime.InteropServices;
 using ASUW_Cafe.Properties;
 using Microsoft.Win32;
 using MySql.Data.MySqlClient;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml.Linq;
@@ -40,26 +40,36 @@ namespace ASUW_Cafe
         public static string ftppass = Settings.Default.ftppass;
         public static string ftpdir = Settings.Default.ftpdir;
         public static bool userisDemo = false;
+        public static bool userisAdmin = false;
+        public static bool userisManager = false;
+        public static string userid;
+        public static string userapisms;
+        public static string userphone;
+        public static string usertarif;
+        public static string userblocked;
+        private static string _description = string.Empty;
+        private static int _percentagecompletion = 0;
+
        // public static Image MemForImage;
         
         public static string username = "Гость";
         public static string GET(string Url, string Data)
         {
-            WebRequest req = WebRequest.Create(Url + Data);
+            var req = WebRequest.Create(Url + Data);
             // req.Proxy = new WebProxy("195.200.245.49");
-            WebResponse resp = req.GetResponse();
-            Stream stream = resp.GetResponseStream();
-            StreamReader sr = new StreamReader(stream);
-            string Out = sr.ReadToEnd();
+            var resp = req.GetResponse();
+            var stream = resp.GetResponseStream();
+            var sr = new StreamReader(stream);
+            var Out = sr.ReadToEnd();
             sr.Close();
             return Out;
         }
 
         public static Guid checkBlock()
         {
-            Guid old = Settings.Default.Block;
+            var old = Settings.Default.Block;
             Console.WriteLine(old);
-            Guid Block = Guid.NewGuid();
+            var Block = Guid.NewGuid();
             // bool emptyGuid = (,);
             if (old == Guid.Empty)
             {
@@ -84,8 +94,8 @@ namespace ASUW_Cafe
 
         public static Dictionary<string, string> ParseJson(string res)
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            JArray result = new JArray();
+            var dict = new Dictionary<string, string>();
+            var result = new JArray();
             try
             {
                 result = (JArray)JsonConvert.DeserializeObject(res);
@@ -99,7 +109,7 @@ namespace ASUW_Cafe
 
             foreach (JObject value in result)
             {
-                dict.Add(value.Value<string>("userid").ToString().Trim(), value.Value<string>("login").ToString().Trim());
+                dict.Add(value.Value<string>("userid").Trim(), value.Value<string>("login").Trim());
             }
             return dict;
         }
@@ -107,7 +117,7 @@ namespace ASUW_Cafe
         public static OpenFileDialog loadedImage()
         {
             loadImage.Filter = "Графические файлы|*.jpg;*.jpeg;*.gif;*.png;*.bmp|Все файлы|*.*";
-            Nullable<bool> result = loadImage.ShowDialog();
+            var result = loadImage.ShowDialog();
 
             if (result == true)
             {
@@ -204,8 +214,8 @@ namespace ASUW_Cafe
 
         public static string ToTranslit(string str)
         {
-            string result = str.Trim();
-            foreach (KeyValuePair<string, string> pair in words)
+            var result = str.Trim();
+            foreach (var pair in words)
             {
                 result = result.Replace(pair.Key, pair.Value);
             }
@@ -215,38 +225,38 @@ namespace ASUW_Cafe
 
         internal static void loggingStart(string idCafe)
         {
-            Guid block = checkBlock();
-            string res = "";
+            var block = checkBlock();
+            var res = "";
             try
             {
-               res = GET(url, "/index.php?option=com_mtree&task=start&user=" + block.ToString() + "&name=" + username + "&id=" + idCafe + "");
+               res = GET(url, "/index.php?option=com_mtree&task=start&user=" + block + "&name=" + username + "&id=" + idCafe + "");
                if (res != "1")
                {
-                  WriteToFile("Ошибка при логе старта юзера " + block.ToString() + " и объекта " + idCafe + "", "log.txt");
+                  WriteToFile("Ошибка при логе старта юзера " + block + " и объекта " + idCafe + "", "log.txt");
                }
             }
             catch
             {
-                WriteToFile("Ошибка при логе старта юзера " + block.ToString() + " и объекта " + idCafe + "", "log.txt");
+                WriteToFile("Ошибка при логе старта юзера " + block + " и объекта " + idCafe + "", "log.txt");
             }
          //   throw new NotImplementedException();
         }
 
         internal static void loggingFinish(string idCafe)
         {
-            Guid block = checkBlock();
-            string res = "";
+            var block = checkBlock();
+            var res = "";
             try
             {
-               res =  GET(url, "/index.php?option=com_mtree&task=finish&user=" + block.ToString() + "&name=" + username + "&id=" + idCafe + "");
+               res =  GET(url, "/index.php?option=com_mtree&task=finish&user=" + block + "&name=" + username + "&id=" + idCafe + "");
                if (res != "1")
                {
-                   WriteToFile("Ошибка при логе финиша юзера " + block.ToString() + " и объекта " + idCafe + "", "log.txt");
+                   WriteToFile("Ошибка при логе финиша юзера " + block + " и объекта " + idCafe + "", "log.txt");
                }
             }
             catch
             {
-                WriteToFile("Ошибка при логе финиша юзера "+block.ToString()+" и объекта " + idCafe + "" , "log.txt" );
+                WriteToFile("Ошибка при логе финиша юзера "+block+" и объекта " + idCafe + "" , "log.txt" );
             }
             //   throw new NotImplementedException();
         }
@@ -254,9 +264,9 @@ namespace ASUW_Cafe
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(filePath, true))
+                using (var writer = new StreamWriter(filePath, true))
                 {
-                    writer.WriteLine(DateTime.Now.ToString() + " " + sNote);
+                    writer.WriteLine(DateTime.Now + " " + sNote);
                 }
             }
             catch (Exception) { }
@@ -265,9 +275,9 @@ namespace ASUW_Cafe
         {
             try
             {
-                string ResultSearchObject = GET("http://geocode-maps.yandex.ru/1.x/?geocode=", address);
-                XDocument doc = XDocument.Parse(ResultSearchObject);
-                foreach (XElement el in doc.Root.Elements())
+                var ResultSearchObject = GET("http://geocode-maps.yandex.ru/1.x/?geocode=", address);
+                var doc = XDocument.Parse(ResultSearchObject);
+                foreach (var el in doc.Root.Elements())
                 {
                     if (coords[1].Length == 0)
                     {
@@ -295,7 +305,7 @@ namespace ASUW_Cafe
         {
             if (el.HasElements)
             {
-                foreach (XElement element in el.Elements())
+                foreach (var element in el.Elements())
                 {
                     if (coords[1].Length == 0)
                     {
@@ -313,8 +323,7 @@ namespace ASUW_Cafe
             }
         }
 
-        private static string _description = string.Empty;
-        private static int _percentagecompletion = 0;
+
         public static String Description
         {
             get { return _description; }
@@ -339,7 +348,7 @@ namespace ASUW_Cafe
         public static void ScaleByWidthAndHeight(Image oImg, int maxWidth, int maxHeight, int resolutionDPI, string text)
         {
             var originalBitmap = new Bitmap(oImg);
-            double ratioWidthToHeight = originalBitmap.Width / (double)originalBitmap.Height;
+            var ratioWidthToHeight = originalBitmap.Width / (double)originalBitmap.Height;
             int newHeight;
             int newWidth;
             if (ratioWidthToHeight > 1)
@@ -352,24 +361,24 @@ namespace ASUW_Cafe
                 newHeight = maxHeight;
                 newWidth = (int)(maxWidth * ratioWidthToHeight);
             }
-            Bitmap newBitmap = new Bitmap(newWidth, newHeight);
-            Graphics graphic = Graphics.FromImage(newBitmap);
+            var newBitmap = new Bitmap(newWidth, newHeight);
+            var graphic = Graphics.FromImage(newBitmap);
             graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
             graphic.DrawImage(originalBitmap, 0, 0, newBitmap.Width, newBitmap.Height);
 
             newBitmap.SetResolution(resolutionDPI, resolutionDPI);
-            ImageFormat format = ImageFormat.Jpeg;
+            var format = ImageFormat.Jpeg;
           //  return newBitmap;
             newBitmap.Save(text, format);
         }
     
         public  static Image DrawImageFromContrImage(System.Windows.Controls.Image img){
-           MemoryStream ms = new MemoryStream();
-           BmpBitmapEncoder bbe = new BmpBitmapEncoder();
+           var ms = new MemoryStream();
+           var bbe = new BmpBitmapEncoder();
            bbe.Frames.Add(BitmapFrame.Create(new Uri(img.Source.ToString(), UriKind.RelativeOrAbsolute)));
 
            bbe.Save(ms);
-           Image img2 = Image.FromStream(ms);
+           var img2 = Image.FromStream(ms);
            return img2;
        }
     }
@@ -409,8 +418,8 @@ namespace ASUW_Cafe
         {
             get
             {
-                Type t = Item.GetType();
-                PropertyInfo pi = t.GetProperty("rev_title");
+                var t = Item.GetType();
+                var pi = t.GetProperty("rev_title");
                 return pi.GetValue(Item, null).ToString();
             }
         }
@@ -418,8 +427,8 @@ namespace ASUW_Cafe
         {
             get
             {
-                Type t = Item.GetType();
-                PropertyInfo pi = t.GetProperty("rev_id");
+                var t = Item.GetType();
+                var pi = t.GetProperty("rev_id");
                 return pi.GetValue(Item, null).ToString();
             }
         }
@@ -427,8 +436,8 @@ namespace ASUW_Cafe
         {
             get
             {
-                Type t = Item.GetType();
-                PropertyInfo pi = t.GetProperty("guest_name");
+                var t = Item.GetType();
+                var pi = t.GetProperty("guest_name");
                 return pi.GetValue(Item, null).ToString();
             }
         }
@@ -436,8 +445,8 @@ namespace ASUW_Cafe
         {
             get
             {
-                Type t = Item.GetType();
-                PropertyInfo pi = t.GetProperty("rev_text");
+                var t = Item.GetType();
+                var pi = t.GetProperty("rev_text");
                 return pi.GetValue(Item, null).ToString();
             }
         }
@@ -445,8 +454,8 @@ namespace ASUW_Cafe
         {
             get
             {
-                Type t = Item.GetType();
-                PropertyInfo pi = t.GetProperty("rev_date");
+                var t = Item.GetType();
+                var pi = t.GetProperty("rev_date");
                 return pi.GetValue(Item, null).ToString();
             }
         }
@@ -454,7 +463,7 @@ namespace ASUW_Cafe
         {
             get
             {
-                List<Wrapper> list = new List<Wrapper>();
+                var list = new List<Wrapper>();
                 if (Item is Project)
                 {
                     list.Add(

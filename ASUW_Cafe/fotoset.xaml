@@ -1,16 +1,18 @@
 ﻿<Window x:Class="ASUW_Cafe.fotoset"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="fotoset" Height="472" Width="649">
+        Title="fotoset" Height="487" Width="664">
     <Grid HorizontalAlignment="Left" Height="442" VerticalAlignment="Top" Width="639" Margin="0,0,0,-1">
-        <DockPanel x:Name="panelimgs" LastChildFill="False" Margin="0,89,0,0" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" HorizontalAlignment="Center" VerticalAlignment="Top" Height="286" Width="629">
-            <Image Height="91" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        </DockPanel>
-        <Button Content="Добавить фото" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="160" Height="35" Click="Button_Click"/>
+        <Button x:Name="addFoto" Content="Добавить фото" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="160" Height="35" Click="addFoto_Click"/>
         <TextBox x:Name="title" HorizontalAlignment="Left" Height="23" Margin="105,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="333" RenderTransformOrigin="0.175,-0.783"/>
         <Label Content="Название" HorizontalAlignment="Left" Margin="11,16,0,0" VerticalAlignment="Top"/>
-        <Button Content="Сохранить" HorizontalAlignment="Left" Margin="469,397,0,0" VerticalAlignment="Top" Width="160" Height="35" Click="Button_Click_1"/>
+        <Button x:Name="savefotos" Content="Сохранить" Margin="469,397,10,10" Click="savefotos_Click"/>
         <ComboBox x:Name="listobjs" HorizontalAlignment="Left" Margin="220,58,0,0" VerticalAlignment="Top" Width="218" ItemsSource="{Binding}"/>
         <Label Content="Заведение" HorizontalAlignment="Left" Margin="11,58,0,0" VerticalAlignment="Top"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,150,0,50">
+            <StackPanel x:Name="panelimgs" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" CanHorizontallyScroll="True" CanVerticallyScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Orientation="Horizontal"/>
+        </ScrollViewer>
+        <Button x:Name="delbtn" Content="Удалить выделенные" Margin="50,397,399,10" Click="delbtn_Click" />
+        <ProgressBar x:Name="pbfotosets" HorizontalAlignment="Left" Height="20" Margin="75,115,0,0" VerticalAlignment="Top" Width="490"/>
     </Grid>
 </Window>

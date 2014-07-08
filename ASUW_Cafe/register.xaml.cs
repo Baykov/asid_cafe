@@ -16,17 +16,13 @@ namespace ASUW_Cafe
 
         private void Regbutton_Click(object sender, RoutedEventArgs e)
         {
-            int usertype;
-            string login = "";
-            string pass = "";
-            string apisms = "";
-            usertype = typesbox.SelectedIndex;
+            var usertype = typesbox.SelectedIndex;
             if (usertype > (-1))
             {
-                login = regloginbox.Text.ToString();
-                pass = regpassbox.Password.ToString();
-                apisms = regapibox.Text.ToString();
-                Guid old = Settings.Default.Block;
+                var login = regloginbox.Text;
+                var pass = regpassbox.Password;
+              //  var apisms = regapibox.Text;
+                var old = Settings.Default.Block;
                 if (old == Guid.Empty)
                 {
                     helper.checkBlock();
@@ -36,16 +32,14 @@ namespace ASUW_Cafe
 
                 try
                 {
-                    string logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=gethits&id=" + login + "&pid=" + pass + "&tid=" + usertype + "" + "&gid=" + old + "&aid = " + apisms + "").ToString();
+                    var logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=gethits&id=" + login + "&pid=" + pass + "&tid=" + usertype + "" + "&gid=" + old + "");
                     if (logined == "3")
                     {
                         MessageBox.Show("Это имя занято.");
-                        return;
                     }
                     else if (logined == "2")
                     {
                         MessageBox.Show("Ошибка сети, попытайтесь позже.");
-                        return;
                     }
                     else
                     {
@@ -56,7 +50,6 @@ namespace ASUW_Cafe
                 catch
                 {
                     MessageBox.Show("Ошибка сети, попытайтесь позже.");
-                    return;
                 }
             }
             else

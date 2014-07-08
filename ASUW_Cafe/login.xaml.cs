@@ -33,8 +33,8 @@ namespace ASUW_Cafe
 
         private void getUsersList(object sender, DoWorkEventArgs e)
         {
-            users = helper.ParseJson(helper.GET(helper.url, "/index.php?option=com_mtree&task=getusers&id=" + block.ToString() + "").ToString());
-            for (int i = 0; i < 101; i++)
+            users = helper.ParseJson(helper.GET(helper.url, "/index.php?option=com_mtree&task=getusers&id=" + block + ""));
+            for (var i = 0; i < 101; i++)
             {
                 _worker.ReportProgress(i);
                 Thread.Sleep(8);
@@ -69,23 +69,19 @@ namespace ASUW_Cafe
 
         private void logbut_Click(object sender, RoutedEventArgs e)
         {
-            string userid = "";
-            string username = "";
-            string pass = "";
-            string logined = "";
-            KeyValuePair<string, string> user = new KeyValuePair<string, string>();
+            KeyValuePair<string, string> user;
             try
             {
                 user = (KeyValuePair<string, string>)usersbox.SelectedValue;
-                userid = user.Key;
-                username = user.Value;
-                pass = passbox.Password.ToString();
-                logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=getstats&id=" + userid + "&pid=" + pass + "").ToString();
+                var userid = user.Key;
+                var username = user.Value;
+                var pass = passbox.Password;
+                var logined = helper.GET(helper.url, "/index.php?option=com_mtree&task=getstats&id=" + userid + "&pid=" + pass + "");
                 if (logined == "1")
                 {
                     try
                     {
-                        MainWindow mwin = new MainWindow();
+                        var mwin = new MainWindow("user");
                         helper.username = username;
                         Close();
                         mwin.Show();
@@ -94,6 +90,22 @@ namespace ASUW_Cafe
                     {
                         MessageBox.Show("Ошибка запуска программы");
                     }
+                } 
+                else if (logined == "2")
+                {
+                    helper.username = username;
+                    helper.userisManager = true;
+                    var mwin = new MainWindow("manager");
+                    Close();
+                    mwin.Show();
+                }
+                else if (logined == "3")
+                {
+                    helper.username = username;
+                    helper.userisAdmin = true;
+                    var mwin = new MainWindow("admin");
+                    Close();
+                    mwin.Show();
                 }
                 else
                 {
@@ -103,14 +115,13 @@ namespace ASUW_Cafe
             catch
             {
                 MessageBox.Show("Выберите пользователя.");
-                return;
             }
 
         }
 
         private void regbut_Click(object sender, RoutedEventArgs e)
         {
-            register reg = new register();
+            var reg = new register();
             reg.Show();
         }
     }
